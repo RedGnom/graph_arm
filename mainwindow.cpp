@@ -89,13 +89,22 @@ void MainWindow::on_seller_button_clicked() {
     vector<int> tour = salesman.solveTSP(graph); // Get the best tour
 
     // Print the tour to debug output
-    qDebug() << "Traveling Salesman Problem Solution:";
+    qDebug() << "Задача коммивояжера:";
+    QString output = "";
     for (int i = 0; i < tour.size(); ++i) {
-        qDebug() << tour[i];
+        output += QString::number(tour[i]);
+        if (i != tour.size() - 1) {
+            output += " -> ";
+        }
     }
+    if (!tour.empty()) {
+        output += " -> " + QString::number(tour[0]);
+    }
+    qDebug() << output;
+
 
     // Access and display total distance from salesman object
-    qDebug() << "Total Distance:";
+    qDebug() << "Пройденный путь:";
     qDebug() << salesman.totalDistance;
     graph.Print();
 }

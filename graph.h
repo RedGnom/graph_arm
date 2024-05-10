@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <QDebug>
 using namespace std;
 template <class T>
 struct Vertex {
@@ -157,7 +158,7 @@ public:
 
     void Print() {
         if (!this->isEmpty()) {
-            cout << "Матрица смежности графа: " << endl;
+            qDebug() << "Матрица смежности графа: ";
             cout << "- ";
             for (int i = 0; i < vertexList.size(); ++i) {
                 cout << vertexList[i] << " ";

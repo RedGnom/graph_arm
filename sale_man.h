@@ -1,7 +1,7 @@
 #ifndef SALE_MAN_H
 #define SALE_MAN_H
 #include "graph.h"
-#include <QDebug>
+
 using namespace std;
 
 
