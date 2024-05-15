@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 {
     ui->setupUi(this);
+    //Связь сигналов из main в класс отрисовки
 
     graphPrint = new graph_print(this);
     connect(ui->add_button, &QPushButton::clicked, this, &MainWindow::on_add_button_clicked);
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget *centralWidget = new QWidget(this);
     QGridLayout *layout = new QGridLayout(centralWidget);
 
-    // Add UI elements to the layout (adjust positions as needed)
+    // Добавление элементов ui в конструктор окна
     layout->addWidget(ui->add_button, 0, 0);
     layout->addWidget(ui->vert_insert, 0, 1);
     layout->addWidget(ui->delete_vertex, 0, 2);
@@ -42,10 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    // Add graph visualization widget (graphPrint) to the layout
-    layout->addWidget(graphPrint, 2, 0, 1, -1);  // Spans all columns in the second row
+    //Заполненеие оставщегося места визуализацией
+    layout->addWidget(graphPrint, 2, 0, 1, -1);
 
-    // Set the central widget of the main window
+
     this->setCentralWidget(centralWidget);
 
 }
@@ -55,13 +56,14 @@ MainWindow::~MainWindow()
     delete ui;
     delete graphPrint;
 }
+//После нажатия кнопки добавление идет ожидание клика
 void MainWindow::on_add_button_clicked() {
     int vertexLabel = ui->vert_insert->text().toInt();
 
     addVertexMode = true;
     currentVertexLabel = vertexLabel;
 }
-
+//Передача координат клика в визуализацию
 void MainWindow::mousePressEvent(QMouseEvent* event) {
     if (addVertexMode) {
         QPoint pos = event->pos();
@@ -72,7 +74,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
 
     }
 }
-
+//Добавление вершины
 void MainWindow::on_add_edge_clicked()
 {
     int vertexLabel1 = ui->vertex1->text().toInt();
@@ -82,13 +84,13 @@ void MainWindow::on_add_edge_clicked()
     emit addEdge(vertexLabel1, vertexLabel2, weight);
 }
 
-
+//Задача коммивояежера
 void MainWindow::on_seller_button_clicked() {
-    // ... (existing code for solving TSP) ...
 
-    vector<int> tour = salesman.solveTSP(graph); // Get the best tour
 
-    // Print the tour to debug output
+    vector<int> tour = salesman.solveTSP(graph);
+
+
     qDebug() << "Задача коммивояжера:";
     QString output = "";
     for (int i = 0; i < tour.size(); ++i) {
@@ -103,25 +105,25 @@ void MainWindow::on_seller_button_clicked() {
     qDebug() << output;
 
 
-    // Access and display total distance from salesman object
+
     qDebug() << "Пройденный путь:";
     qDebug() << salesman.totalDistance;
     graph.Print();
 }
-
+//Удаление вершины
 void MainWindow::on_delete_vertex_clicked() {
     int vertexLabel = ui->vert_insert->text().toInt(); // Получить метку вершины от пользователя
     graph.DeleteVertex(vertexLabel);
     emit deleteVertexSlot(vertexLabel);
 }
-
+//Удаление грани
 void MainWindow::on_delete_edge_clicked() {
     int vertexLabel1 = ui->vertex1->text().toInt();
     int vertexLabel2 = ui->vertex2->text().toInt();
     graph.DeleteEdge(vertexLabel1, vertexLabel2);
     emit deleteEdgeSlot(vertexLabel1, vertexLabel2);
 }
-
+//Изменение веса грани
 void MainWindow::on_change_edge_clicked() {
     int vertexLabel1 = ui->vertex1->text().toInt();
     int vertexLabel2 = ui->vertex2->text().toInt();

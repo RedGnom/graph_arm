@@ -15,7 +15,8 @@ graph_print::graph_print(QWidget *parent) : QOpenGLWidget(parent)
 }
 void graph_print::initializeGL() {
     initializeOpenGLFunctions();
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(166.0f / 255.0f, 202.0f / 255.0f, 240.0f / 255.0f, 1.0f);
+
 }
 
 void graph_print::paintGL() {
@@ -87,7 +88,7 @@ void graph_print::drawEdge(const EdgeInfo& info) {
             vertex2 = &vertex;
         }
     }
-    // Check if both vertices were found
+    // Если две вершины найдены
     if (vertex1 && vertex2) {
         // Подготовка к отрисовке
         QPainter painter;

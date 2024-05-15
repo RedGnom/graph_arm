@@ -18,21 +18,22 @@ public:
     // Функция для выделения нового узла поиска
     // 'i' - текущий вершинный индекс
     // 'j' - следующий вершинный индекс
+    //Вычисление нижней границы стоимости маршрута
     int calculateLowerBound(const Graph<int>& graph, const vector<int>& tour) {
         int minCost = 0;
         int n = graph.GetAmountVerts();
 
-        // Consider minimum spanning tree cost for remaining cities
+        // Учитываем минимальную стоимость связующего дерева для остальных городов
         vector<bool> visited(n, false);
         for (int i = 0; i < tour.size(); ++i) {
             visited[tour[i]] = true;
         }
 
-        // Use Prim's algorithm to find minimum spanning tree cost
+        // Используем алгоритм Прима, чтобы найти минимальную стоимость связующего дерева
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         for (int i = 0; i < n; ++i) {
             if (!visited[i]) {
-                pq.push({0, i});
+                pq.push({ 0, i });
                 break;
             }
         }
@@ -51,12 +52,12 @@ public:
 
             for (int v = 0; v < n; ++v) {
                 if (!visited[v] && graph.GetWeight(u, v) > 0) {
-                    pq.push({graph.GetWeight(u, v), v});
+                    pq.push({ graph.GetWeight(u, v), v });
                 }
             }
         }
 
-        // Add cost of returning to starting city from the last city in the tour
+        // Добавляем стоимость возврата в начальный город из последнего города тура
         if (tour.size() > 1) {
             minCost += graph.GetWeight(tour[tour.size() - 1], tour[0]);
         }
@@ -65,9 +66,9 @@ public:
     }
 
 
-    // Recursive Branch-and-Bound function
+    // Рекурсивная функция ветвей и границ
     void tspBranchAndBound(const Graph<int>& graph, vector<int>& tour, int currPos, int bound, vector<int>& bestTour, int& bestCost) {
-        // If all cities are visited
+        // Проверка посещения всех точек
         if (currPos == graph.GetAmountVerts()) {
             int tourCost = 0;
             for (int i = 0; i < tour.size() - 1; ++i) {
@@ -75,40 +76,40 @@ public:
             }
             tourCost += graph.GetWeight(tour[tour.size() - 1], tour[0]);
 
-            // Update best tour and total distance if a better solution is found
+            // Обновляем лучший маршрут и пройденный путь, если найдено лучшее решение
             if (tourCost < bestCost) {
                 bestCost = tourCost;
                 bestTour = tour;
-                totalDistance = tourCost; // Update total distance here
+                totalDistance = tourCost; // Обновление пройденного пути
             }
             return;
         }
 
-        // Loop through unvisited cities
+        // Проход непосещенных точек
         for (int i = 0; i < graph.GetAmountVerts(); ++i) {
             if (!count(tour.begin(), tour.end(), i)) {
-                // Add city to the tour
+                // Добавитъ точку в маршрут
                 tour.push_back(i);
 
-                // Calculate lower bound for the extended tour
+                // Расчет нижней границы маршрута
                 int newBound = calculateLowerBound(graph, tour);
 
-                // Prune branch if lower bound is greater than current best cost
+                // Убираем ветвь, если нижняя граница больше текущего лучшего пути
                 if (newBound < bestCost) {
                     tspBranchAndBound(graph, tour, currPos + 1, newBound, bestTour, bestCost);
                 }
 
-                // Remove city from the tour for backtracking
+                // Удаление точки
                 tour.pop_back();
             }
         }
     }
 
-    // Function to solve TSP using Branch-and-Bound
+    // Функция нахождения пути
     vector<int> solveTSP(const Graph<int>& graph) {
         int n = graph.GetAmountVerts();
         vector<int> tour;
-        tour.push_back(0); // Start from the first city
+        tour.push_back(0); // Старт от 1 города
 
         int bound = calculateLowerBound(graph, tour);
         int bestCost = INT_MAX;
@@ -116,14 +117,14 @@ public:
 
         tspBranchAndBound(graph, tour, 1, bound, bestTour, bestCost);
 
-        // Calculate total distance after finding the best tour
+        // Расчет пройденного пути, после нахождения лучшего маршрута
         totalDistance = 0;
         for (int i = 0; i < bestTour.size() - 1; ++i) {
             totalDistance += graph.GetWeight(bestTour[i], bestTour[i + 1]);
         }
-        totalDistance += graph.GetWeight(bestTour[bestTour.size() - 1], bestTour[0]); // Add distance from last to first city
+        totalDistance += graph.GetWeight(bestTour[bestTour.size() - 1], bestTour[0]);
 
-        // Return the best tour (consider returning both tour and totalDistance if needed)
+
         return bestTour;
     }
 
