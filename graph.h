@@ -161,7 +161,7 @@ public:
             qDebug() << "Матрица смежности графа: ";
             cout << "- ";
             for (int i = 0; i < vertexList.size(); ++i) {
-                cout << vertexList[i] << " ";
+                cout << vertexList[i]+1 << " ";
             }
             cout << endl;
 

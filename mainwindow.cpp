@@ -70,7 +70,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
 
         emit addVertexClicked(currentVertexLabel, pos);
         addVertexMode = false;
-        graph.insertVertex(currentVertexLabel);
+        graph.insertVertex(currentVertexLabel-1);
 
     }
 }
@@ -80,7 +80,7 @@ void MainWindow::on_add_edge_clicked()
     int vertexLabel1 = ui->vertex1->text().toInt();
     int vertexLabel2 = ui->vertex2->text().toInt();
     int weight = ui->weight->text().toInt();
-    graph.InsertEdge(vertexLabel1, vertexLabel2, weight);
+    graph.InsertEdge(vertexLabel1-1, vertexLabel2-1, weight);
     emit addEdge(vertexLabel1, vertexLabel2, weight);
 }
 
@@ -94,13 +94,13 @@ void MainWindow::on_seller_button_clicked() {
     qDebug() << "Задача коммивояжера:";
     QString output = "";
     for (int i = 0; i < tour.size(); ++i) {
-        output += QString::number(tour[i]);
+        output += QString::number(tour[i]+1);
         if (i != tour.size() - 1) {
             output += " -> ";
         }
     }
     if (!tour.empty()) {
-        output += " -> " + QString::number(tour[0]);
+        output += " -> " + QString::number(tour[0]+1);
     }
     qDebug() << output;
 
@@ -113,14 +113,14 @@ void MainWindow::on_seller_button_clicked() {
 //Удаление вершины
 void MainWindow::on_delete_vertex_clicked() {
     int vertexLabel = ui->vert_insert->text().toInt(); // Получить метку вершины от пользователя
-    graph.DeleteVertex(vertexLabel);
+    graph.DeleteVertex(vertexLabel-1);
     emit deleteVertexSlot(vertexLabel);
 }
 //Удаление грани
 void MainWindow::on_delete_edge_clicked() {
     int vertexLabel1 = ui->vertex1->text().toInt();
     int vertexLabel2 = ui->vertex2->text().toInt();
-    graph.DeleteEdge(vertexLabel1, vertexLabel2);
+    graph.DeleteEdge(vertexLabel1-1, vertexLabel2-1);
     emit deleteEdgeSlot(vertexLabel1, vertexLabel2);
 }
 //Изменение веса грани
@@ -128,7 +128,7 @@ void MainWindow::on_change_edge_clicked() {
     int vertexLabel1 = ui->vertex1->text().toInt();
     int vertexLabel2 = ui->vertex2->text().toInt();
     int newWeight = ui->weight->text().toInt();
-    graph.UpdateEdgeWeight(vertexLabel1, vertexLabel2, newWeight);
+    graph.UpdateEdgeWeight(vertexLabel1-1, vertexLabel2-1, newWeight);
     emit changeEdgeWeightSlot(vertexLabel1, vertexLabel2, newWeight);
 }
 
