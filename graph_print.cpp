@@ -5,6 +5,7 @@ struct VertexInfo {
     float y;
     int vertexLabel;
 };
+
 std::vector<VertexInfo> vertices;
 
 
@@ -30,18 +31,18 @@ void graph_print::paintGL() {
 
 
 void graph_print::addVertexClicked(int vertexLabel, QPoint clickPos) {
-    // Convert click position to widget coordinates
+    // Конвертирование в координаты виджета
     float x = (float)clickPos.x();
     float y = (float)clickPos.y();
     drawVertex(x, y, vertexLabel);
 
-    // Create a new Vertex object with the label and position
+    // Создание вершины
     VertexInfo info;
     info.x = x;
     info.y = y;
     info.vertexLabel = vertexLabel;
     vertices.push_back(info);
-    // Trigger a redraw
+
     update();
 }
 
@@ -66,13 +67,13 @@ void graph_print::drawVertex(float x, float y, int vertexLabel) {
     painter.end();
 }
 void graph_print::addEdge(int vertexLabel1, int vertexLabel2, int weight) {
-    // Create a new Edge object with the labels and weight
+    // Новая грань
     EdgeInfo info;
     info.vertexLabel1 = vertexLabel1;
     info.vertexLabel2 = vertexLabel2;
     info.weight = weight;
     edges.push_back(info);
-    // Trigger a redraw
+
     update();
 }
 

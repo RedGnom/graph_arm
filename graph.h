@@ -7,21 +7,21 @@
 using namespace std;
 template <class T>
 struct Vertex {
-    T number; // Vertex number (unique identifier)
-    float x, y; // Vertex position (in your coordinate system)
+    T number; // Номер вершины
+    float x, y; // Позиция
 };
 template <class T>
 class Graph
 {
 private:
-    // Vector of vertices
+    //Вектор вершин
     vector<T> vertexList;
     vector<int> labelList;
     vector<vector<pair<T, int>>> adjList;
-    // Adjacency matrix
+    // Матрица смежности
     vector<vector<int>> adjMatrix;
     queue<T> VertsQueue;
-    // Maximum size of the vertex vector and adjacency matrix
+    // Максимальный размер
     int maxSize;
 
 public:
@@ -31,7 +31,7 @@ public:
     vector<T> getVertexList() const {
         return vertexList;
     }
-    // Constructor initializes the graph with a given size
+    // Конструктор графа
     Graph(const int& size)
     {
         this->maxSize = size;
@@ -50,6 +50,7 @@ public:
     bool isEmpty() {
         return this->vertexList.size() == 0;
     }
+    //Вставить вершину
     void insertVertex(const T& vertex)
     {
         if (this->isFull()) {
@@ -58,6 +59,7 @@ public:
         }
         this->vertexList.push_back(vertex);
     }
+    //Номер вершины
     int GetVertPos(const T& vertex) const
     {
         for (int i = 0; i < this->vertexList.size(); ++i)
@@ -65,11 +67,12 @@ public:
             if (this->vertexList[i] == vertex)
                 return i;
         }
-        return -1; // Vertex not found
+        return -1;
     }
     int GetAmountVerts() const {
         return this->vertexList.size();
     }
+    //получить вес между вершинами
     int GetWeight(const T& v1, const T& v2) const{
         int v1_p = this->GetVertPos(v1);
         int v2_p = this->GetVertPos(v2);
@@ -84,13 +87,13 @@ public:
     void DeleteVertex(const T& vertex) {
         int pos = GetVertPos(vertex);
         if (pos != -1) {
-            // Remove the vertex from the vertex list
+            // Удалить вершину из списка
             vertexList.erase(vertexList.begin() + pos);
 
-            // Remove the corresponding row from the adjacency matrix
+            // Удалить строку из матрицы смежности
             adjMatrix.erase(adjMatrix.begin() + pos);
 
-            // Remove the corresponding column from the adjacency matrix
+            // Удалить ряд
             for (int i = 0; i < adjMatrix.size(); ++i) {
                 adjMatrix[i].erase(adjMatrix[i].begin() + pos);
             }
@@ -103,7 +106,7 @@ public:
         int pos1 = GetVertPos(vertex1);
         int pos2 = GetVertPos(vertex2);
         if (pos1 != -1 && pos2 != -1) {
-            // Remove the edge from the adjacency matrix
+            // Удалить грань из матрицы смежности
             adjMatrix[pos1][pos2] = 0;
             adjMatrix[pos2][pos1] = 0;
         } else {
@@ -166,7 +169,7 @@ public:
             cout << endl;
 
             for (int i = 0; i < this->vertexList.size(); ++i) {
-                cout << this->vertexList[i] << " ";
+                cout << this->vertexList[i]+1 << " ";
                 for (int j = 0; j < this->vertexList.size(); ++j) {
                     cout << " " << this->adjMatrix[i][j] << " ";
                 }

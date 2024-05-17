@@ -6,7 +6,7 @@
 #include <QBrush>
 #include <QPen>
 #include <QPainter>
-#include <QtOpenGL> // For OpenGL function declarations
+#include <QtOpenGL>
 #include <QOpenGLFunctions>
 
 #include <QGridLayout>
